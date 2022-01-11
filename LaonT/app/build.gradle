@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -29,6 +31,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        dataBinding true    // 데이터 바인딩 활성
+        viewBinding true    // 뷰 바인딩 활성화
+    }
 }
 
 dependencies {
@@ -40,4 +46,17 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // firebase
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    // firebase google login
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+
+    //데이터 바인딩
+    kapt 'com.android.databinding:compiler:3.1.4'
+
+    implementation "androidx.activity:activity:1.2.0"
+    implementation "androidx.fragment:fragment:1.3.0"
 }
