@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".intro.NicknameJoin"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        android:text="별명"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/nickname_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/nickname_edit_round"
+        android:padding="10dp"
+        android:hint="별명"/>
+
+    <TextView
+        android:id="@+id/nickname_comment_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:textColor="@color/red_500"
+        android:textSize="10dp"
+        android:text="* 2글자 이상 입력하세요"/>
+    
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:textColor="@color/black"
+        android:textSize="10dp"
+        android:text="* 별명을 설정하면 30일간 변경이 불가합니다"/>
+
+    <Button
+        android:id="@+id/nickname_allow_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/yellow_button"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:text="설정하기"/>
+
+</LinearLayout>

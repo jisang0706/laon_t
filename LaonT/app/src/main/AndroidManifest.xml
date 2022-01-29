@@ -2,19 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.laont">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LaonT">
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".intro.NicknameJoin"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoTitleBar" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.LaonT" />
         <activity
-            android:name=".IntroActivity"
-            android:exported="true">
+            android:name=".intro.IntroActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
