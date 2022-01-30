@@ -10,9 +10,16 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/noti_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="board"/>
+            android:background="@drawable/black_round_stroke"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="15dp"
+            android:layout_margin="10dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="전체공지: "/>
 
     </LinearLayout>
 

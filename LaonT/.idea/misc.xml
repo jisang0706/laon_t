@@ -12,8 +12,10 @@
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.1254439894274031" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_nickname_join.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_board.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/activity_noti_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_board.xml" value="0.35596539430016916" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/item_noti.xml" value="0.27150435511483795" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.16614583333333333" />
       </map>
     </option>

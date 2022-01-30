@@ -46,3 +46,14 @@ data class CenterDto (
     val y: Double
         )
 
+data class NotiListDto (
+    val list: List<NotiDetailDto>
+        )
+
+data class NotiDetailDto (
+    val id: Int,
+    val title: String,
+    val created_at: String,
+    val content: String,
+    val images: List<String>
+        )
