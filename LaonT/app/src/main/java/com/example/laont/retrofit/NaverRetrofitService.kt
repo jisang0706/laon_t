@@ -13,7 +13,7 @@ interface NaverRetrofitService {
         @Query("coords") coords: String,
         @Query("output") output: String,
         @Query("orders") orders: String,
-        @Query("X-NCP-APIGW-API-KEY-ID") key_id: String,
-        @Query("X-NCP-APIGW-API-KEY") key: String
+        @Header("X-NCP-APIGW-API-KEY-ID") key_id: String,
+        @Header("X-NCP-APIGW-API-KEY") key: String
     ) : Call<ReverseGeocodingDto>
 }

@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
+    id 'com.google.secrets_gradle_plugin' version '0.4'
 }
 
 android {
@@ -67,4 +68,7 @@ dependencies {
 
     // location
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    // naver map
+    implementation 'com.naver.maps:map-sdk:3.12.0'
 }

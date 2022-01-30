@@ -12,13 +12,16 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.example.laont.databinding.ActivityMainBinding
 import com.example.laont.dto.ReverseGeocodingDto
 import com.example.laont.dto.UserInfoDto
+import com.example.laont.fragment.viewpager.PagerAdapter
 import com.example.laont.retrofit.NaverRetrofitService
 import com.example.laont.retrofit.RetrofitCreator
 import com.example.laont.retrofit.RetrofitService
 import com.google.android.gms.location.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,6 +36,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
     private val binding get() = mBinding!!
     private lateinit var toolbarText: TextView
+    private lateinit var view_pager: ViewPager2
+    private lateinit var bottom_adapter: PagerAdapter
+    private lateinit var bottom_navigation: BottomNavigationView
 
     private lateinit var reverseGeocoding: ReverseGeocodingDto
 
@@ -45,6 +51,8 @@ class MainActivity : AppCompatActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getLastLocation()
+
+        viewPagerInit()
     }
 
     private fun getLastLocation() {
@@ -152,5 +160,27 @@ class MainActivity : AppCompatActivity() {
             override fun onFailure(call: Call<ReverseGeocodingDto>, t: Throwable) { }
 
         })
+    }
+
+    fun viewPagerInit() {
+        view_pager = binding.viewpager
+        bottom_adapter = PagerAdapter(supportFragmentManager, lifecycle)
+        view_pager.adapter = bottom_adapter
+        view_pager.isUserInputEnabled = false
+
+        bottom_navigation = binding.bottomNevigation
+        bottom_navigation.run {
+            setOnNavigationItemSelectedListener { item ->
+                when(item.itemId) {
+                    R.id.item_board -> {
+                        view_pager.currentItem = 0
+                    }
+                    R.id.item_map -> {
+                        view_pager.currentItem = 1
+                    }
+                }
+                true
+            }
+        }
     }
 }
