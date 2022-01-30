@@ -6,11 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".intro.IntroActivity">
 
-    <Button
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textStyle="bold"
+        android:textSize="50dp"
+        android:text="라온터"
+        android:textColor="@color/yellow_500"/>
+
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:text="구글 아이디로 로그인" />
 
 </RelativeLayout>

@@ -9,7 +9,7 @@ interface RetrofitService {
 
     @FormUrlEncoded
     @POST("user/join")
-    fun userJoin(
+    fun userJoin (
         @Field("google_token") google_token: String,
         @Field("nickname") nickname: String,
         @Field("email") email: String
@@ -17,7 +17,7 @@ interface RetrofitService {
 
     @FormUrlEncoded
     @POST("user/login")
-    fun userLogin(
+    fun userLogin (
         @Field("google_token") google_token: String
     ) : Call<UserInfoDto>
 }
