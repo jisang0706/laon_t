@@ -53,7 +53,7 @@ data class NotiListDto (
 data class NotiDetailDto (
     val id: Int,
     val title: String,
-    val created_at: String,
+    var created_at: String,
     val content: String,
     val images: List<String>
         )

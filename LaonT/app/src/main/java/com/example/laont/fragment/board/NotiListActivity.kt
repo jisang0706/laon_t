@@ -2,8 +2,12 @@ package com.example.laont.fragment.board
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.AbsListView
+import android.widget.ImageButton
 import android.widget.ListView
+import com.example.laont.R
 import com.example.laont.SecretData
 import com.example.laont.databinding.ActivityNotiListBinding
 import com.example.laont.dto.NotiDetailDto
@@ -24,9 +28,11 @@ class NotiListActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     lateinit var retrofit: Retrofit
     lateinit var service: RetrofitService
+    lateinit var items: MutableList<NotiDetailDto>
 
     lateinit var noti_list: ListView
     lateinit var list_adapter: NotiListAdapter
+    lateinit var back_button: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +41,7 @@ class NotiListActivity : AppCompatActivity() {
 
         retrofit = RetrofitCreator.defaultRetrofit(SecretData.SERVER_URI)
         service = retrofit.create(RetrofitService::class.java)
+        items = mutableListOf<NotiDetailDto>()
 
         noti_list = binding.notiList
         getNotiList()
@@ -42,19 +49,25 @@ class NotiListActivity : AppCompatActivity() {
         noti_list.setOnItemClickListener { parent, view, position, id ->
             getNotiDetail(view, list_adapter.getItemPkId(position))
         }
+
+        back_button = binding.backButton
+        back_button.setOnClickListener {
+            finish()
+        }
     }
 
     fun getNotiList() {
-        val items = mutableListOf<NotiDetailDto>()
         val call : Call<NotiListDto> = service.getNotiList(pagenate, 0)
 
         call.enqueue(object: Callback<NotiListDto> {
             override fun onResponse(call: Call<NotiListDto>, response: Response<NotiListDto>) {
                 if (response.isSuccessful) {
+
                     for (i in 0 until response.body()?.list!!.size) {
                         items.add(
                             response.body()?.list!![i]
                         )
+                        items[items!!.size-1].created_at = items[items!!.size-1].created_at.split(" ")[0]
                     }
 
                     list_adapter = NotiListAdapter(items)
