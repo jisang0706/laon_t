@@ -8,17 +8,18 @@ import com.example.laont.fragment.board.BoardFragment
 import com.example.laont.fragment.map.MapFragment
 
 class PagerAdapter(fm: FragmentManager, lc: Lifecycle) : FragmentStateAdapter(fm, lc) {
-    var fragmentList = arrayOfNulls<Fragment>(2)
+    var boardFragment: BoardFragment = BoardFragment()
+    var mapFragment: MapFragment = MapFragment()
 
     override fun getItemCount() = 2
 
     override fun createFragment(position: Int): Fragment {
         if (position == 0) {
-            fragmentList[0] = BoardFragment()
-            return fragmentList[0]!!
+            boardFragment = BoardFragment()
+            return boardFragment
         } else if (position == 1) {
-            fragmentList[1] = MapFragment()
-            return fragmentList[1]!!
+            mapFragment = MapFragment()
+            return mapFragment
         } else {
             error("No such position: $position")
         }

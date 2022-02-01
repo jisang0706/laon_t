@@ -1,5 +1,6 @@
 package com.example.laont.retrofit
 
+import com.example.laont.dto.GeoCodingDto
 import com.example.laont.dto.ReverseGeocodingDto
 import retrofit2.Call
 import retrofit2.http.GET
@@ -16,4 +17,11 @@ interface NaverRetrofitService {
         @Header("X-NCP-APIGW-API-KEY-ID") key_id: String,
         @Header("X-NCP-APIGW-API-KEY") key: String
     ) : Call<ReverseGeocodingDto>
+
+    @GET("map-geocode/v2/geocode")
+    fun geocoding (
+        @Query("query") address: String,
+        @Header("X-NCP-APIGW-API-KEY-ID") key_id: String,
+        @Header("X-NCP-APIGW-API-KEY") key: String
+    ) : Call<GeoCodingDto>
 }

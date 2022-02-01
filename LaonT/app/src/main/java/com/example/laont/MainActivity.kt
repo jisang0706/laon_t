@@ -14,17 +14,18 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.laont.databinding.ActivityMainBinding
-import com.example.laont.dto.ReverseGeocodingDto
-import com.example.laont.dto.UserInfoDto
+import com.example.laont.dto.*
 import com.example.laont.fragment.viewpager.PagerAdapter
 import com.example.laont.retrofit.NaverRetrofitService
+import com.example.laont.retrofit.OpenAPIRetrofitService
 import com.example.laont.retrofit.RetrofitCreator
-import com.example.laont.retrofit.RetrofitService
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.naver.maps.map.NaverMap
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
+    lateinit var coords: String
+    lateinit var address: String
+    var PG_list = mutableListOf<Playground>()
 
     private lateinit var mBinding: ActivityMainBinding
     private val binding get() = mBinding!!
@@ -41,6 +45,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottom_navigation: BottomNavigationView
 
     private lateinit var reverseGeocoding: ReverseGeocodingDto
+
+    lateinit var naverMap: NaverMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
     // Check location service of the device is enabled
     private fun isLocationEnabled(): Boolean {
-        var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
@@ -133,7 +139,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun coordsToAddress(lng: Double, lat: Double) {
-        val retrofit = RetrofitCreator.defaultRetrofit(SecretData.NAVER_REVERSE_GEOCODING_URI)
+        coords = lng.toString()+","+lat.toString()
+        val retrofit = RetrofitCreator.defaultRetrofit(SecretData.NAVER_API_URI)
         val service = retrofit.create(NaverRetrofitService::class.java)
         val call : Call<ReverseGeocodingDto> = service.reverseGeocoding(
             lng.toString()+","+lat.toString(),
@@ -154,6 +161,8 @@ class MainActivity : AppCompatActivity() {
                         response.body()?.results!!
                     )
                     toolbarText.setText(reverseGeocoding.results[0].region.area3.name)
+                    address = reverseGeocoding.results[0].region.area2.name + " " + reverseGeocoding.results[0].region.area3.name
+                    getPlayGround(address)
                 }
             }
 
@@ -181,6 +190,78 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+        }
+    }
+
+    fun getPlayGround(areaNm: String) {
+        val retrofit = RetrofitCreator.xmlRetrofit(SecretData.OPEN_API_URL)
+        val service = retrofit.create(OpenAPIRetrofitService::class.java)
+        val call : Call<PGResponseDto> = service.getPlayGround(
+            SecretData.OPEN_API_serviceKey,
+            areaNm,
+            10
+        )
+
+        call.enqueue(object : Callback<PGResponseDto> {
+            override fun onResponse(call: Call<PGResponseDto>, response: Response<PGResponseDto>) {
+                if (response.isSuccessful) {
+                    processPlayground(response.body()?.body!!.items.itemlist)
+                }
+            }
+
+            override fun onFailure(call: Call<PGResponseDto>, t: Throwable) {}
+
+        })
+    }
+
+    fun processPlayground(items: List<PGItemDto>) {
+        val retrofit = RetrofitCreator.defaultRetrofit(SecretData.NAVER_API_URI)
+        val service = retrofit.create(NaverRetrofitService::class.java)
+        for (i in 0 until items.size) {
+            val address: String
+            if (items[i].roadAddress != null) {
+                address = items[i].roadAddress!!
+            } else {
+                address = items[i].groundAddress1!! + " " + items[i].groundAddress2!!
+            }
+            val call: Call<GeoCodingDto> = service.geocoding(
+                address,
+                SecretData.NAVER_CLIENT_ID,
+                SecretData.NAVER_CLIENT_SECRET
+            )
+
+            call.enqueue(object: Callback<GeoCodingDto> {
+                override fun onResponse(
+                    call: Call<GeoCodingDto>,
+                    response: Response<GeoCodingDto>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body()?.addresses!!.size > 0) {
+                            PG_list.add(
+                                Playground(
+                                    items[i].id.toString(),
+                                    address,
+                                    items[i].name.toString(),
+                                    response.body()?.addresses!![0].y,
+                                    response.body()?.addresses!![0].x
+                                )
+                            )
+                            if (i >= items.size-1) {
+                                PG_list.sortBy {
+                                    -((coords.split(",")[0].toDouble() - it.longitude).pow(
+                                        2
+                                    ) + (coords.split(",")[1].toDouble() - it.latitude).pow(2))
+                                }
+
+                                bottom_adapter.mapFragment.initMarker(PG_list)
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<GeoCodingDto>, t: Throwable) { }
+
+            })
         }
     }
 }
