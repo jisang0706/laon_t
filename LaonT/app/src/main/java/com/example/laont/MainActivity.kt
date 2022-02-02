@@ -22,6 +22,7 @@ import com.example.laont.retrofit.RetrofitCreator
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.naver.maps.map.NaverMap
+import com.naver.maps.map.util.FusedLocationSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,7 +30,9 @@ import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
 
-    var PERMISSION_ID = 1000
+    companion object {
+        var PERMISSION_ID = 1000
+    }
 
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
@@ -45,8 +48,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottom_navigation: BottomNavigationView
 
     private lateinit var reverseGeocoding: ReverseGeocodingDto
-
-    lateinit var naverMap: NaverMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         if (checkPermission()) {
             if(isLocationEnabled()) {
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
-                    var location: Location? = task.result
+                    val location: Location? = task.result
                     if (location == null) {
                         getNewLocation()
                     } else {
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
     private val locationCallback = object: LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
-            var lastLocation: Location = p0.lastLocation
+            val lastLocation: Location = p0.lastLocation
             coordsToAddress(lastLocation.longitude, lastLocation.latitude)
         }
     }
@@ -185,6 +186,7 @@ class MainActivity : AppCompatActivity() {
                         view_pager.currentItem = 0
                     }
                     R.id.item_map -> {
+                        bottom_adapter.mapFragment.initMarker(PG_list)
                         view_pager.currentItem = 1
                     }
                 }
@@ -199,7 +201,7 @@ class MainActivity : AppCompatActivity() {
         val call : Call<PGResponseDto> = service.getPlayGround(
             SecretData.OPEN_API_serviceKey,
             areaNm,
-            10
+            50
         )
 
         call.enqueue(object : Callback<PGResponseDto> {
@@ -209,7 +211,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<PGResponseDto>, t: Throwable) {}
+            override fun onFailure(call: Call<PGResponseDto>, t: Throwable) {
+                Toast.makeText(binding.root.context, "놀이시설 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+            }
 
         })
     }
@@ -248,11 +252,11 @@ class MainActivity : AppCompatActivity() {
                             )
                             if (i >= items.size-1) {
                                 PG_list.sortBy {
-                                    -((coords.split(",")[0].toDouble() - it.longitude).pow(
+                                    ((coords.split(",")[0].toDouble() - it.longitude).pow(
                                         2
                                     ) + (coords.split(",")[1].toDouble() - it.latitude).pow(2))
                                 }
-
+                                PG_list = PG_list.subList(0, 10)
                                 bottom_adapter.mapFragment.initMarker(PG_list)
                             }
                         }

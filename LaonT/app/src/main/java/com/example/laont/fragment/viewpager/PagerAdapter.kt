@@ -15,10 +15,8 @@ class PagerAdapter(fm: FragmentManager, lc: Lifecycle) : FragmentStateAdapter(fm
 
     override fun createFragment(position: Int): Fragment {
         if (position == 0) {
-            boardFragment = BoardFragment()
             return boardFragment
         } else if (position == 1) {
-            mapFragment = MapFragment()
             return mapFragment
         } else {
             error("No such position: $position")

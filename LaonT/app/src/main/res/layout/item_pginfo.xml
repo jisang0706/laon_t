@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minHeight="120dp"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/pgname_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="놀이터 이름" />
+
+    <TextView
+        android:id="@+id/pgaddress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pgname_text"
+        android:textSize="17dp"
+        android:textColor="@color/black"
+        android:text="놀이터 주소"/>
+
+    <Space
+        android:layout_below="@id/pgaddress_text"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <TextView
+        android:id="@+id/pgboard_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:text="최상단 글 한 문단"/>
+
+    <TextView
+        android:id="@+id/pgboardmore_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="15dp"
+        android:textColor="@color/yellow_500"
+        android:text="더보기>"/>
+
+</RelativeLayout>
