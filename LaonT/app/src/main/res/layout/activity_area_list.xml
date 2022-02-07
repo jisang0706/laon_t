@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.board.AreaListActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/all_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|center_horizontal"
+            android:padding="10dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/left_round"
+                android:stateListAnimator="@null"
+                android:textStyle="bold"
+                android:text="검색"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/write_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/right_round"
+                android:stateListAnimator="@null"
+                android:textStyle="bold"
+                android:text="글쓰기"/>
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

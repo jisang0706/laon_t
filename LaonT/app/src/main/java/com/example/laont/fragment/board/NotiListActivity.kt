@@ -3,6 +3,7 @@ package com.example.laont.fragment.board
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.AbsListView
 import android.widget.ImageButton
@@ -32,7 +33,6 @@ class NotiListActivity : AppCompatActivity() {
 
     lateinit var noti_list: ListView
     lateinit var list_adapter: NotiListAdapter
-    lateinit var back_button: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +50,9 @@ class NotiListActivity : AppCompatActivity() {
             getNotiDetail(view, list_adapter.getItemPkId(position))
         }
 
-        back_button = binding.backButton
-        back_button.setOnClickListener {
-            finish()
-        }
+        setTitle("전체공지")
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.elevation = (0).toFloat()
     }
 
     fun getNotiList() {
@@ -93,5 +92,15 @@ class NotiListActivity : AppCompatActivity() {
             override fun onFailure(call: Call<NotiDetailDto>, t: Throwable) { }
 
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            16908332 -> { // App Bar home button
+                finish()
+                return true
+            }
+        }
+        return true
     }
 }

@@ -9,5 +9,8 @@ class SecretData {
         val NAVER_API_URI = "https://naveropenapi.apigw.ntruss.com"
         val NAVER_CLIENT_ID = "xh2u0l63zq"
         val NAVER_CLIENT_SECRET = "aX0fRcwcxaNppCLZPcEo7IyBcxSPngFMqULhz20R"
+
+        val RELOAD_AREA = 100
+        val RESULT_OK = 1
     }
 }

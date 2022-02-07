@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/writer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:textSize="13dp"
+        android:text="작성자"/>
+
+    <TextView
+        android:id="@+id/content_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/writer_text"
+        android:paddingHorizontal="2dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:text="내용"/>
+
+    <TextView
+        android:id="@+id/created_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content_text"
+        android:padding="2dp"
+        android:text="MMdd HHmm"
+        android:textColor="@color/black"
+        android:textSize="10dp" />
+
+    <ImageButton
+        android:id="@+id/menu_button"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignRight="@id/created_text"
+        android:layout_alignBottom="@id/created_text"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dots" />
+
+    <ImageButton
+        android:id="@+id/reply_button"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_toLeftOf="@id/menu_button"
+        android:layout_alignBottom="@id/menu_button"
+        android:background="@android:color/transparent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/comment"/>
+
+</RelativeLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/right_arrow"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="@drawable/ic_baseline_subdirectory_arrow_right_24"/>
+
+    <LinearLayout
+        android:id="@+id/reply_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/right_arrow">
+
+        <TextView
+            android:id="@+id/writer_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textSize="13dp"
+            android:text="작성자"/>
+
+        <TextView
+            android:id="@+id/content_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/writer_text"
+            android:paddingHorizontal="2dp"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:text="내용"/>
+
+        <TextView
+            android:id="@+id/created_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content_text"
+            android:padding="2dp"
+            android:text="MMdd HHmm"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/menu_button"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignRight="@id/reply_layout"
+        android:layout_alignBottom="@id/reply_layout"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/transparent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dots" />
+
+</RelativeLayout>

@@ -26,6 +26,7 @@ import com.naver.maps.map.util.FusedLocationSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.min
 import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var locationRequest: LocationRequest
     lateinit var coords: String
     lateinit var address: String
+    lateinit var town: String
     var PG_list = mutableListOf<Playground>()
 
     private lateinit var mBinding: ActivityMainBinding
@@ -161,9 +163,12 @@ class MainActivity : AppCompatActivity() {
                         response.body()?.status!!,
                         response.body()?.results!!
                     )
-                    toolbarText.setText(reverseGeocoding.results[0].region.area3.name)
-                    address = reverseGeocoding.results[0].region.area2.name + " " + reverseGeocoding.results[0].region.area3.name
+                    town = reverseGeocoding.results[0].region.area3.name
+                    address = reverseGeocoding.results[0].region.area2.name +
+                            " " + reverseGeocoding.results[0].region.area3.name
+                    toolbarText.setText(town)
                     getPlayGround(address)
+                    bottom_adapter.boardFragment.initAreaBoard()
                 }
             }
 
@@ -222,14 +227,14 @@ class MainActivity : AppCompatActivity() {
         val retrofit = RetrofitCreator.defaultRetrofit(SecretData.NAVER_API_URI)
         val service = retrofit.create(NaverRetrofitService::class.java)
         for (i in 0 until items.size) {
-            val address: String
+            val pgAddress: String
             if (items[i].roadAddress != null) {
-                address = items[i].roadAddress!!
+                pgAddress = items[i].roadAddress!!
             } else {
-                address = items[i].groundAddress1!! + " " + items[i].groundAddress2!!
+                pgAddress = items[i].groundAddress1!! + " " + items[i].groundAddress2!!
             }
             val call: Call<GeoCodingDto> = service.geocoding(
-                address,
+                pgAddress,
                 SecretData.NAVER_CLIENT_ID,
                 SecretData.NAVER_CLIENT_SECRET
             )
@@ -244,7 +249,7 @@ class MainActivity : AppCompatActivity() {
                             PG_list.add(
                                 Playground(
                                     items[i].id.toString(),
-                                    address,
+                                    pgAddress,
                                     items[i].name.toString(),
                                     response.body()?.addresses!![0].y,
                                     response.body()?.addresses!![0].x
@@ -256,7 +261,8 @@ class MainActivity : AppCompatActivity() {
                                         2
                                     ) + (coords.split(",")[1].toDouble() - it.latitude).pow(2))
                                 }
-                                PG_list = PG_list.subList(0, 10)
+                                Log.e("WOW", "LISTSIZE" + PG_list.size)
+                                PG_list = PG_list.subList(0, min(10, PG_list.size))
                                 bottom_adapter.mapFragment.initMarker(PG_list)
                             }
                         }

@@ -63,7 +63,6 @@ class NicknameJoin : AppCompatActivity() {
 
     fun joinUser() {
         val prefs = getSharedPreferences("user_info", 0)
-        Log.e("WOW", prefs.getString("google_token", "").toString() + "ASAD")
         val retrofit = RetrofitCreator.defaultRetrofit(SecretData.SERVER_URI)
         val service = retrofit.create(RetrofitService::class.java)
         val call : Call<ActionDto> = service.userJoin(
@@ -75,7 +74,6 @@ class NicknameJoin : AppCompatActivity() {
         call.enqueue(object: Callback<ActionDto> {
             override fun onResponse(call: Call<ActionDto>, response: Response<ActionDto>) {
                 if (response.isSuccessful) {
-                    Log.e("WOW", response.body()?.action.toString())
                     if (response.body()?.action.toString() == "1") {
                         val prefsEditor = prefs.edit()
                         prefsEditor.putString("nickname", nicknameEdit.text.toString())
@@ -86,7 +84,6 @@ class NicknameJoin : AppCompatActivity() {
                     }
                     else {
                         Toast.makeText(applicationContext, "이미 존재하는 닉네임입니다.", Toast.LENGTH_LONG).show()
-                        Log.e("WOW", prefs.getString("google_token", "").toString() + nicknameEdit.text.toString() + prefs.getString("email", "").toString())
                     }
                 }
             }

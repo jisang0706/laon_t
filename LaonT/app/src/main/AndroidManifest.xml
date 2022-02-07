@@ -13,15 +13,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true">
+
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="${NAVER_CLIENT_ID}" />
 
         <activity
+            android:name=".fragment.board.AreaUploadActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LaonT"/>
+        <activity
+            android:name=".fragment.board.AreaDetailActivity"
+            android:exported="false"
+            android:theme="@style/BoardTheme" />
+        <activity
+            android:name=".fragment.board.AreaListActivity"
+            android:exported="false"
+            android:theme="@style/BoardTheme" />
+        <activity
             android:name=".fragment.board.NotiListActivity"
             android:exported="false"
-            android:theme="@style/Theme.LaonT" />
-
+            android:theme="@style/BoardTheme" />
         <activity
             android:name=".intro.NicknameJoin"
             android:exported="false"

@@ -113,6 +113,50 @@ data class PGItemDto (
     var name: String?,
         )
 
+data class AreaListDto (
+    val list: List<AreaDto>
+        )
+
+data class AreaDto (
+    val id: Int,
+    val content: String,
+    val created_at: String,
+    val like: Int,
+    val comment: Int,
+    val writer_nickname: String
+        )
+
+data class CountDto (
+    val count: Int
+        )
+
+data class IdDto (
+    val id: Int
+        )
+
+data class CommentListDto (
+    val list: List<CommentDto>
+        )
+
+data class CommentDto (
+    val id: Int,
+    val content: String,
+    val created_at: String,
+    val writer_nickname: String,
+    var reply: MutableList<ReplyDto>
+        ) {
+    fun isSame(other: CommentDto): Boolean {
+        return other.id == this.id
+    }
+}
+
+data class ReplyDto (
+    val id: Int,
+    val content: String,
+    val created_at: String,
+    val writer_nickname: String
+        )
+
 data class Playground (
     var id: String,
     var address: String,

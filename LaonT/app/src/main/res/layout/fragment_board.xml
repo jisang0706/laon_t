@@ -17,9 +17,45 @@
             android:paddingVertical="5dp"
             android:paddingHorizontal="15dp"
             android:layout_margin="10dp"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="전체공지: "/>
+
+        <RelativeLayout
+            android:id="@+id/area_layout"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:background="@drawable/black_round_stroke"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="15dp"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/area_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="동네 게시판"/>
+
+            <TextView
+                android:id="@+id/area_more_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignBaseline="@id/area_text"
+                android:textSize="15dp"
+                android:textColor="@color/yellow_500"
+                android:text="더 보기>"/>
+
+            <ListView
+                android:id="@+id/area_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/area_text"/>
+        </RelativeLayout>
 
     </LinearLayout>
 
