@@ -4,10 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.*
+import android.widget.AbsListView
+import android.widget.Button
+import android.widget.ListView
 import com.example.laont.R
 import com.example.laont.SecretData
-import com.example.laont.databinding.ActivityAreaListBinding
+import com.example.laont.databinding.ActivityPglistBinding
 import com.example.laont.dto.BoardDto
 import com.example.laont.dto.BoardListDto
 import com.example.laont.retrofit.RetrofitCreator
@@ -17,47 +19,46 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class AreaListActivity : AppCompatActivity(), AbsListView.OnScrollListener {
+class PGListActivity : AppCompatActivity(), AbsListView.OnScrollListener {
 
     var paginate = 0
-    var address = ""
+    var pg_name = ""
     var preLast = 0
 
-    private lateinit var _binding: ActivityAreaListBinding
+    private lateinit var _binding: ActivityPglistBinding
     private val binding get() = _binding!!
     lateinit var retrofit: Retrofit
     lateinit var service: RetrofitService
     lateinit var items: MutableList<BoardDto>
 
-    lateinit var area_list: ListView
+    lateinit var pg_list: ListView
     lateinit var list_adapter: BoardListAdapter
     lateinit var search_button: Button
     lateinit var upload_button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityAreaListBinding.inflate(layoutInflater)
+        _binding = ActivityPglistBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        address = intent.extras!!.getString("address").toString()
+        pg_name = intent.extras!!.getString("pg_name").toString()
 
         retrofit = RetrofitCreator.defaultRetrofit(SecretData.SERVER_URI)
         service = retrofit.create(RetrofitService::class.java)
         items = mutableListOf()
         list_adapter = BoardListAdapter(items)
 
-        area_list = binding.allList
-        area_list.adapter = list_adapter
-        getAreaList()
-        area_list.setOnScrollListener(this)
+        pg_list = binding.allList
+        pg_list.adapter = list_adapter
+        getPgList()
+        pg_list.setOnScrollListener(this)
 
-        val town = address.split(" ")
-        setTitle(town[town.size - 1])
+        setTitle(pg_name)
 
-        area_list.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(binding.root.context, AreaDetailActivity::class.java)
+        pg_list.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(binding.root.context, PGDetailActivity::class.java)
             intent.putExtra("board_id", list_adapter.getItemPkId(position))
-            intent.putExtra("town", title)
+            intent.putExtra("pg_name", pg_name)
             startActivity(intent)
         }
 
@@ -68,18 +69,17 @@ class AreaListActivity : AppCompatActivity(), AbsListView.OnScrollListener {
         upload_button.setOnClickListener {
             val intent = Intent(binding.root.context, AreaUploadActivity::class.java)
             intent.putExtra("title", title)
-            intent.putExtra("address", address)
             startActivity(intent)
         }
     }
 
-    fun getAreaList() {
-        val call: Call<BoardListDto> = service.getAreaList(address, paginate, 0)
+    fun getPgList() {
+        val call: Call<BoardListDto> = service.getPGList(pg_name, paginate, 0)
 
         call.enqueue(object: Callback<BoardListDto> {
             override fun onResponse(call: Call<BoardListDto>, response: Response<BoardListDto>) {
                 if (response.isSuccessful) {
-                    if (!list_adapter.isEmpty)  list_adapter.items.removeAt(list_adapter.count-1)
+                    if(!list_adapter.isEmpty) list_adapter.items.removeAt(list_adapter.count-1)
                     for (item in response.body()?.list!!) {
                         if (list_adapter.items.find { it.id == item.id } == null) {
                             list_adapter.items.add(item)
@@ -107,13 +107,13 @@ class AreaListActivity : AppCompatActivity(), AbsListView.OnScrollListener {
         visibleItemCount: Int,
         totalItemCount: Int
     ) {
-        when(view!!.id) {
+        when (view!!.id) {
             R.id.all_list -> {
                 val lastItem = firstVisibleItem + visibleItemCount
 
                 if (lastItem == list_adapter.count && preLast != lastItem) {
                     preLast = lastItem
-                    getAreaList()
+                    getPgList()
                 }
             }
         }

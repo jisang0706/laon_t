@@ -36,7 +36,7 @@
         android:layout_alignParentBottom="true"
         android:textSize="15dp"
         android:textColor="@color/black"
-        android:text="최상단 글 한 문단"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/pgboardmore_text"

@@ -264,6 +264,7 @@ class MainActivity : AppCompatActivity() {
                                 Log.e("WOW", "LISTSIZE" + PG_list.size)
                                 PG_list = PG_list.subList(0, min(10, PG_list.size))
                                 bottom_adapter.mapFragment.initMarker(PG_list)
+                                bottom_adapter.boardFragment.initPgBoard()
                             }
                         }
                     }

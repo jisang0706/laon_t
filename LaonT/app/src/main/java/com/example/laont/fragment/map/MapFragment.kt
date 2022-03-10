@@ -1,5 +1,6 @@
 package com.example.laont.fragment.map
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.example.laont.MainActivity
+import com.example.laont.SecretData
 import com.example.laont.databinding.FragmentMapBinding
 import com.example.laont.dto.Playground
+import com.example.laont.fragment.board.PGListActivity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Align
@@ -124,5 +127,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         pginfoList.visibility = View.VISIBLE
         list_adapter = PgListAdapter(marker.second)
         pginfoList.adapter = list_adapter
+
+        pginfoList.setOnItemClickListener { par, view, position, id ->
+            val intent = Intent(binding.root.context, PGListActivity::class.java)
+            intent.putExtra("pg_name", marker.second[position].name)
+            startActivityForResult(intent, SecretData.RELOAD_PG)
+        }
     }
 }

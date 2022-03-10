@@ -2,16 +2,16 @@ package com.example.laont.fragment.board
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.laont.MainActivity
-import com.example.laont.R
 import com.example.laont.SecretData
 import com.example.laont.databinding.FragmentBoardBinding
-import com.example.laont.dto.AreaDto
-import com.example.laont.dto.AreaListDto
+import com.example.laont.dto.BoardDto
+import com.example.laont.dto.BoardListDto
 import com.example.laont.dto.NotiListDto
 import com.example.laont.retrofit.RetrofitCreator
 import com.example.laont.retrofit.RetrofitService
@@ -26,12 +26,14 @@ class BoardFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var retrofit: Retrofit
     lateinit var service: RetrofitService
-    lateinit var area_items: MutableList<AreaDto>
+    lateinit var area_board_items: MutableList<BoardDto>
 
     private lateinit var noti_text: TextView
     lateinit var area_list: ListView
-    lateinit var area_list_adapter: AreaListAdapter
+    lateinit var area_list_adapter: BoardListAdapter
     lateinit var area_more_text: TextView
+    lateinit var pg_list: ListView
+    lateinit var pg_list_adapter: PgMainListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +52,7 @@ class BoardFragment : Fragment() {
             startActivity(intent)
         }
         area_list = binding.areaList
+        pg_list = binding.pgList
 
         return binding.root
     }
@@ -71,20 +74,60 @@ class BoardFragment : Fragment() {
         })
     }
 
+    fun initPgBoard() {
+        val parent = activity as MainActivity?
+
+        var pg_board_items = MutableList(10) { index -> BoardDto(0, "", "", 0, 0, "") }
+        pg_list_adapter = PgMainListAdapter(pg_board_items, parent!!.PG_list)
+        pg_list.adapter = pg_list_adapter
+        setListViewHeightBasedOnChildren(pg_list)
+        for (i in 0 until parent!!.PG_list.size) {
+            Log.e("WOW", parent!!.PG_list[i].id + parent!!.PG_list[i].name)
+            val call : Call<BoardListDto> = service.getPGList(parent!!.PG_list[i].name, 0, 1)
+
+            call.enqueue(object: Callback<BoardListDto> {
+                override fun onResponse(
+                    call: Call<BoardListDto>,
+                    response: Response<BoardListDto>
+                ) {
+                    if (response.isSuccessful) {
+                        pg_list_adapter.items[i] = response.body()!!.list[0]
+                    }
+                    pg_list.setOnItemClickListener { par, view, position, id ->
+                        val intent = Intent(binding.root.context, PGListActivity::class.java)
+                        intent.putExtra("pg_name", parent!!.PG_list[position].name)
+                        startActivityForResult(intent, SecretData.RELOAD_PG)
+                    }
+                    pg_list_adapter.notifyDataSetChanged()
+                }
+
+                override fun onFailure(call: Call<BoardListDto>, t: Throwable) {
+                    pg_list.setOnItemClickListener { par, view, position, id ->
+                        val intent = Intent(binding.root.context, PGListActivity::class.java)
+                        intent.putExtra("pg_name", parent!!.PG_list[position].name)
+                        startActivity(intent)
+                    }
+                    pg_list_adapter.notifyDataSetChanged()
+                }
+
+            })
+        }
+    }
+
     fun initAreaBoard() {
         val parent = activity as MainActivity?
 
-        area_items = mutableListOf<AreaDto>()
-        val call : Call<AreaListDto> = service.getAreaList(parent!!.address, 0, 1)
+        area_board_items = mutableListOf()
+        val call : Call<BoardListDto> = service.getAreaList(parent!!.address, 0, 1)
 
-        call.enqueue(object: Callback<AreaListDto> {
-            override fun onResponse(call: Call<AreaListDto>, response: Response<AreaListDto>) {
+        call.enqueue(object: Callback<BoardListDto> {
+            override fun onResponse(call: Call<BoardListDto>, response: Response<BoardListDto>) {
                 if (response.isSuccessful) {
                     for (item in response.body()?.list!!) {
-                        area_items.add(item)
+                        area_board_items.add(item)
                     }
 
-                    area_list_adapter = AreaListAdapter(area_items)
+                    area_list_adapter = BoardListAdapter(area_board_items)
                     area_list.adapter = area_list_adapter
                     area_more_text = binding.areaMoreText
                     area_more_text.setOnClickListener {
@@ -103,7 +146,7 @@ class BoardFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<AreaListDto>, t: Throwable) { }
+            override fun onFailure(call: Call<BoardListDto>, t: Throwable) { }
 
         })
     }
@@ -116,5 +159,27 @@ class BoardFragment : Fragment() {
                 initAreaBoard()
             }
         }
+        else if (requestCode== SecretData.RELOAD_PG) {
+            if (resultCode == SecretData.RESULT_OK) {
+                initPgBoard()
+            }
+        }
+    }
+
+    fun setListViewHeightBasedOnChildren(listView: ListView) {
+        val adapter = listView.adapter
+        if (adapter == null)    return
+
+        var totalHeight = 0
+        val desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST)
+        for (i in 0 until adapter.count) {
+            val item = adapter.getView(i, null, listView)
+            item.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED)
+            totalHeight += item.measuredHeight
+        }
+
+        val params = listView.layoutParams
+        params.height = totalHeight + (listView.dividerHeight * (adapter.count - 1))
+        listView.requestLayout()
     }
 }

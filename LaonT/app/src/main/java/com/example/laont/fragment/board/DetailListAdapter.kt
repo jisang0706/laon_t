@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.laont.R
 import com.example.laont.SecretData
 import com.example.laont.dto.*
@@ -20,8 +18,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class DetailListAdapter (val board: AreaDto, val items: MutableList<CommentDto>,
-                         val context: Context, val parentClass: AreaDetailActivity) : BaseAdapter() {
+class DetailListAdapter (val board: BoardDto, val items: MutableList<CommentDto>,
+                         val context: Context, val parentClass: BoardDetail) : BaseAdapter() {
 
     var retrofit: Retrofit
     var service: RetrofitService
@@ -77,7 +75,7 @@ class DetailListAdapter (val board: AreaDto, val items: MutableList<CommentDto>,
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val item = getItem(position)
-        if (item is AreaDto) {
+        if (item is BoardDto) {
             val convertView = LayoutInflater.from(parent!!.context).inflate(R.layout.item_board_detail, parent, false)
 
             val writer_text = convertView.findViewById<TextView>(R.id.writer_text)
@@ -136,7 +134,13 @@ class DetailListAdapter (val board: AreaDto, val items: MutableList<CommentDto>,
         val prefs = context.getSharedPreferences("user_info", 0)
         val google_token: String = prefs.getString("google_token", "").toString()
         if (google_token != "") {
-            val call : Call<CountDto> = service.likeArea(board.id, google_token)
+            var call: Call<CountDto>
+            if (parentClass is AreaDetailActivity) {
+                call = service.likeArea(board.id, google_token)
+            }
+            else {
+                call = service.likePG(board.id, google_token)
+            }
 
             call.enqueue(object: Callback<CountDto> {
                 override fun onResponse(call: Call<CountDto>, response: Response<CountDto>) {
@@ -172,7 +176,12 @@ class DetailListAdapter (val board: AreaDto, val items: MutableList<CommentDto>,
         builder.setTitle("삭제하시겠습니까?")
         builder.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
             if (item is CommentDto) {
-                val call = service.deleteComment((item as CommentDto).id, google_token)
+                var call : Call<ActionDto>
+                if (parentClass is AreaDetailActivity) {
+                    call = service.deleteAreaComment((item as CommentDto).id, google_token)
+                } else {
+                    call = service.deletePGComment((item as CommentDto).id, google_token)
+                }
                 call.enqueue(object: Callback<ActionDto> {
                     override fun onResponse(call: Call<ActionDto>, response: Response<ActionDto>) {
                         if (response.isSuccessful) {
@@ -192,7 +201,12 @@ class DetailListAdapter (val board: AreaDto, val items: MutableList<CommentDto>,
                 })
             }
             else {
-                val call = service.deleteComment((item as ReplyDto).id, google_token)
+                var call : Call<ActionDto>
+                if (parentClass is AreaDetailActivity) {
+                    call = service.deleteAreaComment((item as ReplyDto).id, google_token)
+                } else {
+                    call = service.deletePGComment((item as ReplyDto).id, google_token)
+                }
                 call.enqueue(object: Callback<ActionDto> {
                     override fun onResponse(call: Call<ActionDto>, response: Response<ActionDto>) {
                         if (response.isSuccessful) {

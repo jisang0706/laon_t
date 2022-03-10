@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import com.example.laont.SecretData
-import com.example.laont.databinding.ActivityAreaUploadBinding
+import com.example.laont.databinding.ActivityBoardUploadBinding
 import com.example.laont.dto.IdDto
 import com.example.laont.retrofit.RetrofitCreator
 import com.example.laont.retrofit.RetrofitService
@@ -19,26 +19,26 @@ import retrofit2.Retrofit
 
 class AreaUploadActivity : AppCompatActivity() {
 
-    private lateinit var _binding: ActivityAreaUploadBinding
+    private lateinit var _binding: ActivityBoardUploadBinding
     private val binding get() = _binding!!
     lateinit var retrofit: Retrofit
     lateinit var service: RetrofitService
 
-    lateinit var area_town_text: TextView
+    lateinit var title_text: TextView
     lateinit var back_button: ImageButton
     lateinit var allow_button: Button
     lateinit var content_edit: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityAreaUploadBinding.inflate(layoutInflater)
+        _binding = ActivityBoardUploadBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         retrofit = RetrofitCreator.defaultRetrofit(SecretData.SERVER_URI)
         service = retrofit.create(RetrofitService::class.java)
 
-        area_town_text = binding.townText
-        area_town_text.text = intent.extras!!.getString("town").toString()
+        title_text = binding.titleText
+        title_text.text = intent.extras!!.getString("title").toString()
         back_button = binding.backButton
         back_button.setOnClickListener { finish() }
         allow_button = binding.allowButton
@@ -49,28 +49,53 @@ class AreaUploadActivity : AppCompatActivity() {
     fun upload() {
         val prefs = getSharedPreferences("user_info", 0)
         val google_token: String = prefs.getString("google_token", "").toString()
-        val address = intent.extras!!.getString("address").toString()
+        val address: String = intent.extras!!.getString("address", "")
         if (google_token != "") {
-            val call: Call<IdDto> = service.uploadArea(
-                google_token,
-                address,
-                area_town_text.text.toString(),
-                content_edit.text.toString())
+            if (address != "") {
+                val call: Call<IdDto> = service.uploadArea(
+                    google_token,
+                    address,
+                    title_text.text.toString(),
+                    content_edit.text.toString()
+                )
 
-            call.enqueue(object: Callback<IdDto> {
-                override fun onResponse(call: Call<IdDto>, response: Response<IdDto>) {
-                    if (response.isSuccessful) {
-                        val intent = Intent(binding.root.context, AreaDetailActivity::class.java)
-                        intent.putExtra("board_id", response.body()!!.id)
-                        intent.putExtra("town", area_town_text.text)
-                        startActivity(intent)
-                        finish()
+                call.enqueue(object : Callback<IdDto> {
+                    override fun onResponse(call: Call<IdDto>, response: Response<IdDto>) {
+                        if (response.isSuccessful) {
+                            val intent =
+                                Intent(binding.root.context, AreaDetailActivity::class.java)
+                            intent.putExtra("board_id", response.body()!!.id)
+                            intent.putExtra("town", title_text.text)
+                            startActivity(intent)
+                            finish()
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<IdDto>, t: Throwable) { }
+                    override fun onFailure(call: Call<IdDto>, t: Throwable) {}
 
-            })
+                })
+            } else {
+                val call: Call<IdDto> = service.uploadPG(
+                    google_token,
+                    title_text.text.toString(),
+                    content_edit.text.toString()
+                )
+
+                call.enqueue(object : Callback<IdDto> {
+                    override fun onResponse(call: Call<IdDto>, response: Response<IdDto>) {
+                        if (response.isSuccessful) {
+                            val intent = Intent(binding.root.context, PGDetailActivity::class.java)
+                            intent.putExtra("board_id", response.body()!!.id)
+                            intent.putExtra("pg_name", title_text.text)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<IdDto>, t: Throwable) { }
+
+                })
+            }
         }
     }
 }

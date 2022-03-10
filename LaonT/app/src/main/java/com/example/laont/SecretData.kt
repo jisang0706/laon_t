@@ -11,6 +11,7 @@ class SecretData {
         val NAVER_CLIENT_SECRET = "aX0fRcwcxaNppCLZPcEo7IyBcxSPngFMqULhz20R"
 
         val RELOAD_AREA = 100
+        val RELOAD_PG = 101
         val RESULT_OK = 1
     }
 }

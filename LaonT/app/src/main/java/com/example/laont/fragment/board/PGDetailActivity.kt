@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import com.example.laont.R
 import com.example.laont.SecretData
 import com.example.laont.databinding.ActivityAreaDetailBinding
+import com.example.laont.databinding.ActivityPgdetailBinding
 import com.example.laont.dto.ActionDto
 import com.example.laont.dto.BoardDto
 import com.example.laont.dto.CommentListDto
@@ -23,14 +24,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrollListener {
+class PGDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrollListener {
 
     var board_id: Int = 0
-    var paginate: Int = 0
+    var paginate = 0
     var preLast: Int = 0
     var group_id: Int = 0
 
-    lateinit var _binding: ActivityAreaDetailBinding
+    lateinit var _binding: ActivityPgdetailBinding
     private val binding get() = _binding!!
     lateinit var retrofit: Retrofit
     lateinit var service: RetrofitService
@@ -41,15 +42,14 @@ class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrol
     lateinit var comment_edit: EditText
     lateinit var comment_send_button: ImageButton
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityAreaDetailBinding.inflate(layoutInflater)
+        _binding = ActivityPgdetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         board_id = intent.extras!!.getInt("board_id")
 
-        setTitle(intent.extras!!.getString("town").toString())
+        setTitle(intent.extras!!.getString("pg_name")).toString()
 
         board_list = binding.boardList
 
@@ -81,12 +81,13 @@ class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrol
     }
 
     override fun initBoard() {
-        val call : Call<BoardDto> = service.getArea(board_id)
+        val call : Call<BoardDto> = service.getPGDetail(board_id)
 
         call.enqueue(object: Callback<BoardDto> {
             override fun onResponse(call: Call<BoardDto>, response: Response<BoardDto>) {
                 if (response.isSuccessful) {
-                    list_adapter = DetailListAdapter(response.body()!!, mutableListOf(), binding.root.context, this@AreaDetailActivity)
+                    Log.e("WOW", response.body()!!.toString())
+                    list_adapter = DetailListAdapter(response.body()!!, mutableListOf(), binding.root.context, this@PGDetailActivity)
                     board_list.adapter = list_adapter
 
                     initComment()
@@ -94,11 +95,12 @@ class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrol
             }
 
             override fun onFailure(call: Call<BoardDto>, t: Throwable) { }
+
         })
     }
 
     override fun initComment() {
-        val call : Call<CommentListDto> = service.getAreaComment(board_id, paginate++)
+        val call : Call<CommentListDto> = service.getPGComment(board_id, paginate++)
 
         call.enqueue(object: Callback<CommentListDto> {
             override fun onResponse(
@@ -129,7 +131,7 @@ class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrol
         imm.hideSoftInputFromWindow(comment_edit.windowToken, 0)
         val prefs = binding.root.context.getSharedPreferences("user_info", 0)
         val google_token: String = prefs.getString("google_token", "").toString()
-        val call : Call<CommentListDto> = service.uploadAreaComment(board_id, google_token, group_id, comment_edit.text.toString())
+        val call : Call<CommentListDto> = service.uploadPGComment(board_id, google_token, group_id, comment_edit.text.toString())
         comment_edit.setText("")
 
         call.enqueue(object: Callback<CommentListDto> {
@@ -142,7 +144,6 @@ class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrol
                         if (list_adapter.items[i].id == response.body()!!.list[0].id) {
                             list_adapter.items[i] = response.body()!!.list[0]
                             list_adapter.notifyDataSetChanged()
-                            Log.e("WOW", "REPLY")
                             return
                         }
                     }
@@ -201,7 +202,7 @@ class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrol
         val builder: AlertDialog.Builder = AlertDialog.Builder(binding.root.context, R.style.MyDialogTheme)
         builder.setTitle("삭제하시겠습니까?")
         builder.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-            val call = service.deleteArea(board_id, google_token)
+            val call = service.deletePG(board_id, google_token)
 
             call.enqueue(object: Callback<ActionDto> {
                 override fun onResponse(call: Call<ActionDto>, response: Response<ActionDto>) {

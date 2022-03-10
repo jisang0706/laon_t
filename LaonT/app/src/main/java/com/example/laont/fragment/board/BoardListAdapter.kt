@@ -1,23 +1,22 @@
 package com.example.laont.fragment.board
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.laont.R
-import com.example.laont.dto.AreaDto
+import com.example.laont.dto.BoardDto
 
-class AreaListAdapter (val items: MutableList<AreaDto>) : BaseAdapter() {
+class BoardListAdapter (val items: MutableList<BoardDto>) : BaseAdapter() {
     override fun getCount(): Int = items.size
 
-    override fun getItem(position: Int): AreaDto = items[position]
+    override fun getItem(position: Int): BoardDto = items[position]
 
     override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val convertView = LayoutInflater.from(parent!!.context).inflate(R.layout.item_area, parent, false)
+        val convertView = LayoutInflater.from(parent!!.context).inflate(R.layout.item_board, parent, false)
 
         val item = items[position]
         convertView.findViewById<TextView>(R.id.writer_text).text = item.writer_nickname

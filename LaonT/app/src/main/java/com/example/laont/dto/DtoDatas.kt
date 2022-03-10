@@ -113,11 +113,11 @@ data class PGItemDto (
     var name: String?,
         )
 
-data class AreaListDto (
-    val list: List<AreaDto>
+data class BoardListDto (
+    val list: List<BoardDto>
         )
 
-data class AreaDto (
+data class BoardDto (
     val id: Int,
     val content: String,
     val created_at: String,
@@ -145,9 +145,6 @@ data class CommentDto (
     val writer_nickname: String,
     var reply: MutableList<ReplyDto>
         ) {
-    fun isSame(other: CommentDto): Boolean {
-        return other.id == this.id
-    }
 }
 
 data class ReplyDto (

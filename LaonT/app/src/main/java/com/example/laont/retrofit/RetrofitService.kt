@@ -36,12 +36,12 @@ interface RetrofitService {
         @Path("area") area: String,
         @Path("paginate") paginate: Int,
         @Query("base") base: Int
-    ) : Call<AreaListDto>
+    ) : Call<BoardListDto>
 
     @GET("area/{board_id}")
     fun getArea (
         @Path("board_id") board_id: Int
-    ) : Call<AreaDto>
+    ) : Call<BoardDto>
 
     @FormUrlEncoded
     @POST("area/{board_id}/like")
@@ -60,14 +60,14 @@ interface RetrofitService {
     ) : Call<IdDto>
 
     @GET("area/{board_id}/comment/{paginate}")
-    fun getComment (
+    fun getAreaComment (
         @Path("board_id") board_id: Int,
         @Path("paginate") paginate: Int
     ) : Call<CommentListDto>
 
     @FormUrlEncoded
     @POST("area/{board_id}/comment")
-    fun uploadComment (
+    fun uploadAreaComment (
         @Path("board_id") board_id: Int,
         @Field("google_token") google_token: String,
         @Field("group_id") group_id: Int,
@@ -75,13 +75,67 @@ interface RetrofitService {
     ) : Call<CommentListDto>
 
     @DELETE("area/{board_id}")
-    fun deleteBoard (
+    fun deleteArea (
         @Path("board_id") board_id: Int,
         @Header("GOOGLETOKEN") google_token: String
     ) : Call<ActionDto>
 
     @DELETE("area/{comment_id}/comment")
-    fun deleteComment (
+    fun deleteAreaComment (
+        @Path("comment_id") comment_id: Int,
+        @Header("GOOGLETOKEN") google_token: String
+    ) : Call<ActionDto>
+
+    @GET("playground/{pg_name}/{paginate}")
+    fun getPGList (
+        @Path("pg_name") pg_name: String,
+        @Path("paginate") paginate: Int,
+        @Query("base") base: Int
+    ) : Call<BoardListDto>
+
+    @GET("playground/{board_id}")
+    fun getPGDetail (
+        @Path("board_id") board_id: Int
+    ) : Call<BoardDto>
+
+    @FormUrlEncoded
+    @POST("playground/upload")
+    fun uploadPG (
+        @Field("google_token") google_token: String,
+        @Field("playground_name") playground_name: String,
+        @Field("content") content: String
+    ) : Call<IdDto>
+
+    @DELETE("playground/{board_id}")
+    fun deletePG (
+        @Path("board_id") board_id: Int,
+        @Header("GOOGLETOKEN") google_token: String
+    ) : Call<ActionDto>
+
+    @FormUrlEncoded
+    @POST("playground/{board_id}/like")
+    fun likePG (
+        @Path("board_id") board_id: Int,
+        @Field("google_token") google_token: String
+    ) : Call<CountDto>
+
+    @GET("playground/{board_id}/comment/{paginate}")
+    fun getPGComment (
+        @Path("board_id") board_id: Int,
+        @Path("paginate") paginate: Int
+    ) : Call<CommentListDto>
+
+    @FormUrlEncoded
+    @POST("playground/{board_id}/comment")
+    fun uploadPGComment (
+        @Path("board_id") board_id: Int,
+        @Field("google_token") google_token: String,
+        @Field("group_id") group_id: Int,
+        @Field("content") content: String
+    ) : Call<CommentListDto>
+
+    @DELETE("playground/{comment_id}/comment")
+    fun deletePGComment (
         @Path("comment_id") comment_id: Int,
         @Header("GOOGLETOKEN") google_token: String
     ) : Call<ActionDto>
