@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/black_round_stroke.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.19010416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_ios_24_black.xml" value="0.19010416666666666" />
+        <entry key="app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.24351851851851852" />
         <entry key="app/src/main/res/drawable/ic_baseline_mode_comment_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_subdirectory_arrow_right_24.xml" value="0.2" />
@@ -23,6 +24,7 @@
         <entry key="app/src/main/res/layout/activity_area_detail.xml" value="0.16" />
         <entry key="app/src/main/res/layout/activity_area_list.xml" value="0.7406758524798979" />
         <entry key="app/src/main/res/layout/activity_area_upload.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/activity_board_search.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.1254439894274031" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_nickname_join.xml" value="0.33" />

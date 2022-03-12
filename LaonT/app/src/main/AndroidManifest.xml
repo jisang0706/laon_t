@@ -19,10 +19,13 @@
             android:value="${NAVER_CLIENT_ID}" />
 
         <activity
+            android:name=".fragment.board.BoardSearchActivity"
+            android:exported="false"
+            android:theme="@style/BoardTheme" />
+        <activity
             android:name=".fragment.board.PGDetailActivity"
             android:exported="false"
             android:theme="@style/BoardTheme" />
-
         <activity
             android:name=".fragment.board.PGListActivity"
             android:exported="false"

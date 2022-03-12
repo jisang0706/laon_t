@@ -71,6 +71,15 @@ class AreaListActivity : AppCompatActivity(), AbsListView.OnScrollListener {
             intent.putExtra("address", address)
             startActivity(intent)
         }
+
+        search_button = binding.searchButton
+        search_button.setOnClickListener {
+            val intent = Intent(binding.root.context, BoardSearchActivity::class.java)
+            intent.putExtra("isArea", true)
+            intent.putExtra("address", address)
+            intent.putExtra("title", title)
+            startActivity(intent)
+        }
     }
 
     fun getAreaList() {

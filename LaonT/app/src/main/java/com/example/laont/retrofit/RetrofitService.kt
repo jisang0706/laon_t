@@ -38,6 +38,13 @@ interface RetrofitService {
         @Query("base") base: Int
     ) : Call<BoardListDto>
 
+    @GET("area/{area}/{paginate}")
+    fun getAreaSearch (
+        @Path("area") area: String,
+        @Path("paginate") paginate: Int,
+        @Query("search") search: String
+    ) : Call<BoardListDto>
+
     @GET("area/{board_id}")
     fun getArea (
         @Path("board_id") board_id: Int
@@ -91,6 +98,13 @@ interface RetrofitService {
         @Path("pg_name") pg_name: String,
         @Path("paginate") paginate: Int,
         @Query("base") base: Int
+    ) : Call<BoardListDto>
+
+    @GET("playground/{pg_name}/{paginate}")
+    fun getPGSearch (
+        @Path("pg_name") pg_name: String,
+        @Path("paginate") paginate: Int,
+        @Query("search") search: String
     ) : Call<BoardListDto>
 
     @GET("playground/{board_id}")

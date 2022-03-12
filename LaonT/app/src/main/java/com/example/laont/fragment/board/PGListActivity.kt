@@ -71,6 +71,14 @@ class PGListActivity : AppCompatActivity(), AbsListView.OnScrollListener {
             intent.putExtra("title", title)
             startActivity(intent)
         }
+
+        search_button = binding.searchButton
+        search_button.setOnClickListener {
+            val intent = Intent(binding.root.context, BoardSearchActivity::class.java)
+            intent.putExtra("isArea", false)
+            intent.putExtra("title", title)
+            startActivity(intent)
+        }
     }
 
     fun getPgList() {

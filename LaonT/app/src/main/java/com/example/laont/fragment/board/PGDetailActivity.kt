@@ -49,7 +49,7 @@ class PGDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrollL
 
         board_id = intent.extras!!.getInt("board_id")
 
-        setTitle(intent.extras!!.getString("pg_name")).toString()
+        setTitle(intent.extras!!.getString("pg_name"))
 
         board_list = binding.boardList
 
