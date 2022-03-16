@@ -20,6 +20,13 @@ interface RetrofitService {
         @Field("google_token") google_token: String
     ) : Call<UserInfoDto>
 
+    @FormUrlEncoded
+    @POST("user/nickname")
+    fun setNickname (
+        @Header("GOOGLETOKEN") google_token: String,
+        @Field("nickname") nickname: String
+    ) : Call<ActionDto>
+
     @GET("noti/list/{paginate}")
     fun getNotiList (
         @Path("paginate") paginate: Int,

@@ -38,7 +38,9 @@ class AreaUploadActivity : AppCompatActivity() {
         service = retrofit.create(RetrofitService::class.java)
 
         title_text = binding.titleText
-        title_text.text = intent.extras!!.getString("title").toString()
+        var name =  intent.extras!!.getString("title").toString()
+        if (name.length > 12) name = name.substring(0, 12) + ".."
+        title_text.text = name
         back_button = binding.backButton
         back_button.setOnClickListener { finish() }
         allow_button = binding.allowButton

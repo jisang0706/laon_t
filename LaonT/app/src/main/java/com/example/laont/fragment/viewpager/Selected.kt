@@ -19,6 +19,7 @@ class Selected (view_pager: ViewPager2, bottom_navigation: BottomNavigationView)
             bottom_navigation.selectedItemId = when (position) {
                 0 -> R.id.item_board
                 1 -> R.id.item_map
+                2 -> R.id.item_user
                 else -> error("No such position $position")
             }
         }

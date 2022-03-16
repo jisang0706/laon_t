@@ -194,6 +194,9 @@ class MainActivity : AppCompatActivity() {
                         bottom_adapter.mapFragment.initMarker(PG_list)
                         view_pager.currentItem = 1
                     }
+                    R.id.item_user -> {
+                        view_pager.currentItem = 2
+                    }
                 }
                 true
             }

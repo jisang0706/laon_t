@@ -14,4 +14,10 @@
         android:icon="@drawable/location"
         ></item>
 
+    <item
+        android:id="@+id/item_user"
+        android:enabled="true"
+        android:title="내 정보"
+        android:icon="@drawable/person"/>
+
 </menu>

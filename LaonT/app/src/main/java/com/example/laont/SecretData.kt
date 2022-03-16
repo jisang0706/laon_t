@@ -12,6 +12,7 @@ class SecretData {
 
         val RELOAD_AREA = 100
         val RELOAD_PG = 101
+        val RELOAD_NICKNAME = 102
         val RESULT_OK = 1
     }
 }

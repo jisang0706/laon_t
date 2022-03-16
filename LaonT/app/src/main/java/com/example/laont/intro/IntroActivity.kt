@@ -85,7 +85,6 @@ class IntroActivity : AppCompatActivity() {
                             prefsEditor.putString("google_token", it.result?.user?.uid)
                             prefsEditor.putString("email", it.result?.user?.email)
                             prefsEditor.apply()
-                            Log.e("WOW", response.body()?.action.toString())
                             if (response.body()?.action.toString() == "1"){
                                 prefsEditor.putString("nickname", response.body()?.nickname)
                                 prefsEditor.apply()
