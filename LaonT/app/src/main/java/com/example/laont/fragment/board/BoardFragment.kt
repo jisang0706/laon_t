@@ -2,7 +2,6 @@ package com.example.laont.fragment.board
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ListView
 import android.widget.TextView
@@ -82,7 +81,6 @@ class BoardFragment : Fragment() {
         pg_list.adapter = pg_list_adapter
         setListViewHeightBasedOnChildren(pg_list)
         for (i in 0 until parent!!.PG_list.size) {
-            Log.e("WOW", parent!!.PG_list[i].id + parent!!.PG_list[i].name)
             val call : Call<BoardListDto> = service.getPGList(parent!!.PG_list[i].name, 0, 1)
 
             call.enqueue(object: Callback<BoardListDto> {

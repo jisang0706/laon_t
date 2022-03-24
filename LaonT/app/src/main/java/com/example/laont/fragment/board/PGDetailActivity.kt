@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
@@ -86,7 +85,6 @@ class PGDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrollL
         call.enqueue(object: Callback<BoardDto> {
             override fun onResponse(call: Call<BoardDto>, response: Response<BoardDto>) {
                 if (response.isSuccessful) {
-                    Log.e("WOW", response.body()!!.toString())
                     list_adapter = DetailListAdapter(response.body()!!, mutableListOf(), binding.root.context, this@PGDetailActivity)
                     board_list.adapter = list_adapter
 

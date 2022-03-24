@@ -8,7 +8,6 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -264,7 +263,6 @@ class MainActivity : AppCompatActivity() {
                                         2
                                     ) + (coords.split(",")[1].toDouble() - it.latitude).pow(2))
                                 }
-                                Log.e("WOW", "LISTSIZE" + PG_list.size)
                                 PG_list = PG_list.subList(0, min(10, PG_list.size))
                                 bottom_adapter.mapFragment.initMarker(PG_list)
                                 bottom_adapter.boardFragment.initPgBoard()

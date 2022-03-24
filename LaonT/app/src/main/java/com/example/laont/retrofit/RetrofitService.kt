@@ -160,4 +160,38 @@ interface RetrofitService {
         @Path("comment_id") comment_id: Int,
         @Header("GOOGLETOKEN") google_token: String
     ) : Call<ActionDto>
+
+    @GET("user/area/{paginate}")
+    fun getWritedAreaList (
+        @Path("paginate") paginate: Int,
+        @Header("GOOGLETOKEN") google_token: String
+    ) : Call<BoardListDto>
+
+    @GET("user/area/comment/{paginate}")
+    fun getWritedAreaCommentList (
+        @Path("paginate") paginate: Int,
+        @Header("GOOGLETOKEN") google_token: String
+    ) : Call<BoardListDto>
+
+    @GET("user/playground/{paginate}")
+    fun getWritedPGList (
+        @Path("paginate") paginate: Int,
+        @Header("GOOGLETOKEN") google_token: String
+    ) : Call<BoardListDto>
+
+    @GET("user/playground/comment/{paginate}")
+    fun getWritedPGCommentList (
+        @Path("paginate") paginate: Int,
+        @Header("GOOGLETOKEN") google_token: String
+    ) : Call<BoardListDto>
+
+    @GET("area/{board_id}/name")
+    fun getAreaBoardName (
+        @Path("board_id") board_id: Int
+    ) : Call<ActionDto>
+
+    @GET("playground/{board_id}/name")
+    fun getPGBoardName (
+        @Path("board_id") board_id: Int
+    ) : Call<ActionDto>
 }

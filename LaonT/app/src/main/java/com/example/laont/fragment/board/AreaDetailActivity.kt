@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
@@ -142,7 +141,6 @@ class AreaDetailActivity : AppCompatActivity(), BoardDetail, AbsListView.OnScrol
                         if (list_adapter.items[i].id == response.body()!!.list[0].id) {
                             list_adapter.items[i] = response.body()!!.list[0]
                             list_adapter.notifyDataSetChanged()
-                            Log.e("WOW", "REPLY")
                             return
                         }
                     }

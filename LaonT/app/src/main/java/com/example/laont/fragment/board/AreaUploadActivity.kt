@@ -19,6 +19,8 @@ import retrofit2.Retrofit
 
 class AreaUploadActivity : AppCompatActivity() {
 
+    var name: String = ""
+
     private lateinit var _binding: ActivityBoardUploadBinding
     private val binding get() = _binding!!
     lateinit var retrofit: Retrofit
@@ -38,9 +40,9 @@ class AreaUploadActivity : AppCompatActivity() {
         service = retrofit.create(RetrofitService::class.java)
 
         title_text = binding.titleText
-        var name =  intent.extras!!.getString("title").toString()
-        if (name.length > 12) name = name.substring(0, 12) + ".."
-        title_text.text = name
+        name =  intent.extras!!.getString("title").toString()
+        if (name.length > 12)   title_text.text = name.substring(0, 12) + ".."
+        else                    title_text.text = name
         back_button = binding.backButton
         back_button.setOnClickListener { finish() }
         allow_button = binding.allowButton
@@ -57,7 +59,7 @@ class AreaUploadActivity : AppCompatActivity() {
                 val call: Call<IdDto> = service.uploadArea(
                     google_token,
                     address,
-                    title_text.text.toString(),
+                    name,
                     content_edit.text.toString()
                 )
 
@@ -67,7 +69,7 @@ class AreaUploadActivity : AppCompatActivity() {
                             val intent =
                                 Intent(binding.root.context, AreaDetailActivity::class.java)
                             intent.putExtra("board_id", response.body()!!.id)
-                            intent.putExtra("town", title_text.text)
+                            intent.putExtra("town", name)
                             startActivity(intent)
                             finish()
                         }
@@ -79,7 +81,7 @@ class AreaUploadActivity : AppCompatActivity() {
             } else {
                 val call: Call<IdDto> = service.uploadPG(
                     google_token,
-                    title_text.text.toString(),
+                    name,
                     content_edit.text.toString()
                 )
 
@@ -88,7 +90,7 @@ class AreaUploadActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val intent = Intent(binding.root.context, PGDetailActivity::class.java)
                             intent.putExtra("board_id", response.body()!!.id)
-                            intent.putExtra("pg_name", title_text.text)
+                            intent.putExtra("pg_name", name)
                             startActivity(intent)
                             finish()
                         }

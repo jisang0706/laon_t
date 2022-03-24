@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -77,7 +76,6 @@ class NicknameActivity : AppCompatActivity() {
     }
 
     fun setNickname(nickname: String) {
-        Log.e("WOW", google_token)
         val call : Call<ActionDto> = service.setNickname(
             google_token,
             nickname

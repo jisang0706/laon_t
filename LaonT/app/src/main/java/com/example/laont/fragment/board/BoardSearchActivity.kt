@@ -3,9 +3,7 @@ package com.example.laont.fragment.board
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.EditText
@@ -65,7 +63,6 @@ class BoardSearchActivity : AppCompatActivity(), AbsListView.OnScrollListener {
 
         searchEdit = binding.searchEdit
         searchEdit.setOnEditorActionListener { v, actionId, event ->
-            Log.e("WOW", "FOCUS")
             search = searchEdit.text.toString()
             paginate = 0
             listAdapter.items.clear()

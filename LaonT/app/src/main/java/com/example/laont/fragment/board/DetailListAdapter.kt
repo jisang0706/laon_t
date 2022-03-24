@@ -2,7 +2,6 @@ package com.example.laont.fragment.board
 
 import android.content.Context
 import android.content.DialogInterface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -103,7 +102,6 @@ class DetailListAdapter (val board: BoardDto, val items: MutableList<CommentDto>
             created_text.text = item.created_at
             val reply_button = convertView.findViewById<ImageButton>(R.id.reply_button)
             reply_button.setOnClickListener {
-                Log.e("WOW", position.toString() + "|" + getParent(position))
                 parentClass.writeReply(getParent(position).id)
             }
             val menu_button = convertView.findViewById<ImageButton>(R.id.menu_button)
@@ -126,7 +124,6 @@ class DetailListAdapter (val board: BoardDto, val items: MutableList<CommentDto>
             created_text.text = item.created_at
             return convertView
         }
-        Log.e("WOW", "TYPE" + item.javaClass.name)
         return LayoutInflater.from(parent!!.context).inflate(R.layout.item_comment, parent, false)
     }
 

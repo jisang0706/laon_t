@@ -2,18 +2,13 @@ package com.example.laont.fragment.board
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.AbsListView
-import android.widget.ImageButton
 import android.widget.ListView
-import com.example.laont.R
 import com.example.laont.SecretData
 import com.example.laont.databinding.ActivityNotiListBinding
 import com.example.laont.dto.NotiDetailDto
 import com.example.laont.dto.NotiListDto
-import com.example.laont.dto.UserInfoDto
 import com.example.laont.retrofit.RetrofitCreator
 import com.example.laont.retrofit.RetrofitService
 import retrofit2.Call
